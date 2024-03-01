@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_order_app/src/presentation/pages/home_page.dart';
+import 'package:food_order_app/src/presentation/pages/login_page.dart';
 import 'package:food_order_app/src/presentation/pages/profile_oage.dart';
 import 'package:food_order_app/src/presentation/pages/search_page.dart';
+import 'package:food_order_app/src/presentation/pages/sign_up_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,11 +22,13 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
         '/home': (context) => const HomePage(),
         '/search': (context) => const SearchPage(),
         '/profile': (context) => const ProfilePage(),
       },
-      initialRoute: '/home',
+      initialRoute: '/login',
     );
   }
 }
