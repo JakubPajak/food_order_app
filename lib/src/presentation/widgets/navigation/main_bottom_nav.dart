@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
 
 class BottomNavClass {
-  Widget BottomNavBar() {
-    return SizedBox(
-      height: 100,
-      child: BottomNavigationBar(
-        elevation: 10.0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  BottomNavClass({required this.navigatorKey});
+
+  Widget BottomNavBar(BuildContext context) {
+    return BottomNavigationBar(
+      elevation: 10.0,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          activeIcon: Icon(
+            Icons.home,
+            color: Colors.blue,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+          activeIcon: Icon(
+            Icons.home,
+            color: Colors.blue,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
+        )
+      ],
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            Navigator.pushNamed(context, '/home');
+            break;
+          case 1:
+            Navigator.pushNamed(context, '/search');
+            break;
+          case 2:
+            Navigator.pushNamed(context, '/profile');
+            ;
+            break;
+        }
+      },
     );
   }
 }

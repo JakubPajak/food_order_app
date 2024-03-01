@@ -36,4 +36,13 @@ class PoppinsStyles {
         fontWeight: FontWeight.normal,
         letterSpacing: 1);
   }
+
+  semiBold() {
+    return const TextStyle(
+        color: Colors.black,
+        fontSize: 23,
+        fontFamily: 'Poppins',
+        fontWeight: FontWeight.normal,
+        letterSpacing: 1);
+  }
 }

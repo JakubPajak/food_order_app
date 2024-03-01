@@ -6,17 +6,19 @@ import 'package:food_order_app/theme/font_styles/anta_styles.dart';
 import 'package:food_order_app/theme/font_styles/poppins_styles.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key});
+  const HomePage({Key? super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavClass().BottomNavBar(),
+      bottomNavigationBar:
+          BottomNavClass(navigatorKey: navigatorKey).BottomNavBar(context),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: Padding(
