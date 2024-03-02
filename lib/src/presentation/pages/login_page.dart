@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_order_app/services/firebase_auth_service.dart';
 import 'package:food_order_app/theme/font_styles/anta_styles.dart';
 import 'package:food_order_app/theme/font_styles/poppins_styles.dart';
 
@@ -11,6 +12,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late bool isVisible;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -33,52 +36,58 @@ class _LoginPageState extends State<LoginPage> {
           width: MediaQuery.of(context).size.width - 50,
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 70,
               ),
               Text(
                 'Log In to start',
                 style: AntStyler().h1Style(),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               TextField(
-                decoration: InputDecoration(
+                controller: _emailController,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text('Email'),
                   prefixIcon: Icon(Icons.email_outlined),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               TextField(
+                controller: _passwordController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text('Password'),
-                    prefixIcon: Icon(Icons.password_outlined),
+                    border: const OutlineInputBorder(),
+                    label: const Text('Password'),
+                    prefixIcon: const Icon(Icons.password_outlined),
                     suffixIcon: GestureDetector(
                         onTap: () {
                           setState(() {
                             isVisible = !isVisible;
                           });
                         },
-                        child: Icon(Icons.remove_red_eye_outlined))),
+                        child: const Icon(Icons.remove_red_eye_outlined))),
                 obscureText: isVisible,
               ),
               const SizedBox(
                 height: 20,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await FirebaseAuthService().signInWithEmailAndPassword(
+                      _emailController.text, _passwordController.text, context);
+                },
                 child: Text(
                   'Log In',
                   style: AntStyler().h2Style(),
                 ),
                 style: ButtonStyle(
                   elevation: MaterialStateProperty.all<double>(5),
-                  minimumSize: MaterialStateProperty.all<Size>(Size(200, 60)),
+                  minimumSize:
+                      MaterialStateProperty.all<Size>(const Size(200, 60)),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.blue),
                 ),
@@ -92,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: PoppinsStyles().regularText(),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -100,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: AntStyler().h2Style(),
               ),
               Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 width: MediaQuery.of(context).size.width - 100,
                 height: 40,
                 decoration: BoxDecoration(
@@ -108,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.login_outlined),
+                    const Icon(Icons.login_outlined),
                     Text(
                       'Login via Google Account',
                       style: PoppinsStyles().regularText(),
@@ -117,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 width: MediaQuery.of(context).size.width - 100,
                 height: 40,
                 decoration: BoxDecoration(
@@ -125,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.login_outlined),
+                    const Icon(Icons.login_outlined),
                     Text(
                       'Login via Facebook',
                       style: PoppinsStyles().regularText(),

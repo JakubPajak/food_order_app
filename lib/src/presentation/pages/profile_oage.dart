@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_order_app/src/presentation/widgets/navigation/main_bottom_nav.dart';
 import 'package:food_order_app/theme/font_styles/anta_styles.dart';
 import 'package:food_order_app/theme/font_styles/poppins_styles.dart';
 

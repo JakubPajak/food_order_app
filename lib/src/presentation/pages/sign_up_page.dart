@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_order_app/services/firebase_auth_service.dart';
+import 'package:food_order_app/src/presentation/pages/home_page.dart';
 import 'package:food_order_app/theme/font_styles/anta_styles.dart';
 import 'package:food_order_app/theme/font_styles/poppins_styles.dart';
 
@@ -11,6 +13,9 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   late bool isVisible;
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _usernameController = new TextEditingController();
 
   @override
   void initState() {
@@ -44,6 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 40,
               ),
               TextField(
+                controller: _usernameController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text('Username'),
@@ -54,6 +60,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 40,
               ),
               TextField(
+                controller: _emailController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   label: Text('Email'),
@@ -64,6 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 40,
               ),
               TextField(
+                controller: _passwordController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Password'),
@@ -81,7 +89,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 20,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await FirebaseAuthService().signUpWithEmailAndPassword(
+                      _emailController.text,
+                      _passwordController.text,
+                      _usernameController.text,
+                      context);
+                },
                 child: Text(
                   'Sign Up',
                   style: AntStyler().h2Style(),

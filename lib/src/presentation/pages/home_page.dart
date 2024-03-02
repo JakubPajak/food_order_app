@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_order_app/services/firebase_getter_methods.dart';
 import 'package:food_order_app/src/presentation/widgets/cards/main_list_card.dart';
 import 'package:food_order_app/src/presentation/widgets/navigation/main_bottom_nav.dart';
 import 'package:food_order_app/src/presentation/widgets/sliders/main_slider_home.dart';
@@ -14,6 +16,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  late String username;
+
+  @override
+  void initState() {
+    username = UserService().getUsername();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hello Kuba!',
+                  'Hello $username!',
                   style: AntStyler().h1Style(),
                 ),
                 Text(
