@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => const SearchPage(),
         '/profile': (context) => const ProfilePage(),
       },
-      initialRoute: '/login',
+      initialRoute: '/home',
     );
   }
 }

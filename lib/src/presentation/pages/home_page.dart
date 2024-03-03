@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_order_app/services/firebase_getter_methods.dart';
 import 'package:food_order_app/src/presentation/widgets/cards/main_list_card.dart';
+import 'package:food_order_app/src/presentation/widgets/cards/restaurant_cards.dart';
 import 'package:food_order_app/src/presentation/widgets/navigation/main_bottom_nav.dart';
 import 'package:food_order_app/src/presentation/widgets/sliders/main_slider_home.dart';
 import 'package:food_order_app/theme/font_styles/anta_styles.dart';
@@ -91,12 +91,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 15),
                 Text('Currently Trending', style: AntStyler().h1Style()),
                 SizedBox(height: 15), // Add spacing between text and cards
-                MainMenuCard(),
-                SizedBox(height: 15), // Add spacing between cards
-                MainMenuCard(),
-                SizedBox(height: 15), // Add spacing between cards
-                MainMenuCard(),
-                // Add more cards as needed
+                ReturnRestaurantsRecords().returnRestaurants(context),
               ],
             ),
           );
