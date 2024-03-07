@@ -101,6 +101,15 @@ class _LoginPageState extends State<LoginPage> {
                   style: PoppinsStyles().regularText(),
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/forgotpass');
+                },
+                child: Text(
+                  'Forgot password? Click here to reset.',
+                  style: PoppinsStyles().regularText(),
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -114,15 +123,20 @@ class _LoginPageState extends State<LoginPage> {
                 height: 40,
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle, border: Border.all()),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Icon(Icons.login_outlined),
-                    Text(
-                      'Login via Google Account',
-                      style: PoppinsStyles().regularText(),
-                    )
-                  ],
+                child: GestureDetector(
+                  onTap: () async {
+                    await FirebaseAuthService().signUpWithGoogle(context);
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Icon(Icons.login_outlined),
+                      Text(
+                        'Login via Google Account',
+                        style: PoppinsStyles().regularText(),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Container(

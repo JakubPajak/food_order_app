@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_order_app/src/presentation/pages/home_page.dart';
 import 'package:food_order_app/theme/font_styles/poppins_styles.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   /// ---------------- Sign Up methods ------------------
   ///
@@ -18,7 +20,7 @@ class FirebaseAuthService {
           .createUserWithEmailAndPassword(email: email, password: password);
 
       await userCredential.user!.updateDisplayName(username);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Signed Up sucessfully!')));
 
@@ -63,7 +65,37 @@ class FirebaseAuthService {
     return null;
   }
 
+  /// Sign Up/Sign In via Google services
+  ///
+  ///
+  Future<User?> signUpWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuth =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuth.accessToken,
+          idToken: googleSignInAuth.idToken,
+        );
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+
+        return userCredential.user;
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Sign-up with Google failed. Please try again.')),
+      );
+      return null;
+    }
+  }
+
   /// ---------------- Sign In methods ------------------
+  ///
   ///
   ///  Sign In via email address and password
   Future<User?> signInWithEmailAndPassword(
