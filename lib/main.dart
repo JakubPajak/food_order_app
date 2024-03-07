@@ -9,7 +9,11 @@ import 'package:food_order_app/src/presentation/pages/sign_up_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    print('--------Error: $e');
+  }
   runApp(const MyApp());
 }
 
@@ -33,7 +37,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => const SearchPage(),
         '/profile': (context) => const ProfilePage(),
       },
-      initialRoute: '/login',
+      initialRoute: '/home',
     );
   }
 }

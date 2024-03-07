@@ -117,8 +117,8 @@ class FirebaseAuthService {
           (route) => false);
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.red, content: Text('Log In failed!')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.red, content: Text('Log In failed! $e')));
     }
     return null;
   }

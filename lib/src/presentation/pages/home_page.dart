@@ -1,17 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_order_app/services/firebase_getter_methods.dart';
-import 'package:food_order_app/src/presentation/widgets/cards/main_list_card.dart';
 import 'package:food_order_app/src/presentation/widgets/navigation/main_bottom_nav.dart';
 import 'package:food_order_app/src/presentation/widgets/sliders/main_slider_home.dart';
 import 'package:food_order_app/theme/font_styles/anta_styles.dart';
 import 'package:food_order_app/theme/font_styles/poppins_styles.dart';
 
+import '../widgets/cards/restaurant_cards.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({Key? super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -20,8 +20,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    username = UserService().getUsername();
     super.initState();
+    loadUsername();
+  }
+
+  Future<void> loadUsername() async {
+    username = await UserService().getUsername();
+    setState(() {});
   }
 
   @override
@@ -43,63 +48,70 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: FutureBuilder<List<Widget>>(
+        future: ReturnRestaurantsRecords().returnRestaurants(context),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No restaurants found!'));
+          } else {
+            return ListView(
               children: [
-                Text(
-                  'Hello $username!',
-                  style: AntStyler().h1Style(),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hello $username!',
+                        style: AntStyler().h1Style(),
+                      ),
+                      Text(
+                        'What do you crave for today?',
+                        style: AntStyler().h2Style(),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'You have recently liked these specialties',
+                        style: PoppinsStyles().regularText(),
+                      ),
+                      SizedBox(height: 10),
+                      MainSliderWidget(
+                        items: [
+                          SliderItem(
+                            imgPath: 'lib/res/images/food-minis/kebab-2.jpg',
+                            title: 'Kebab',
+                          ),
+                          SliderItem(
+                            imgPath:
+                                'lib/res/images/food-minis/rodzaje-sushi-sushi-friends.jpeg',
+                            title: 'Sushi',
+                          ),
+                          SliderItem(
+                            imgPath:
+                                'lib/res/images/food-minis/domowa-pizza748835.avif',
+                            title: 'Pizza',
+                          ),
+                          SliderItem(
+                            imgPath: 'lib/res/images/food-minis/tacos.jpg',
+                            title: 'Tacos',
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 15),
+                      Text('Currently Trending', style: AntStyler().h1Style()),
+                      SizedBox(height: 15),
+                      ...snapshot.data!, // Spread the list of widgets
+                    ],
+                  ),
                 ),
-                Text(
-                  'What do you crave for today?',
-                  style: AntStyler().h2Style(),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'You have recently liked these specialties',
-                  style: PoppinsStyles().regularText(),
-                ),
-                const SizedBox(height: 10),
-                MainSliderWidget(
-                  items: [
-                    SliderItem(
-                      imgPath: 'lib/res/images/food-minis/kebab-2.jpg',
-                      title: 'Kebab',
-                    ),
-                    SliderItem(
-                      imgPath:
-                          'lib/res/images/food-minis/rodzaje-sushi-sushi-friends.jpeg',
-                      title: 'Sushi',
-                    ),
-                    SliderItem(
-                      imgPath:
-                          'lib/res/images/food-minis/domowa-pizza748835.avif',
-                      title: 'Pizza',
-                    ),
-                    SliderItem(
-                      imgPath: 'lib/res/images/food-minis/tacos.jpg',
-                      title: 'Tacos',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Text('Currently Trending', style: AntStyler().h1Style()),
-                SizedBox(height: 15), // Add spacing between text and cards
-                MainMenuCard(),
-                SizedBox(height: 15), // Add spacing between cards
-                MainMenuCard(),
-                SizedBox(height: 15), // Add spacing between cards
-                MainMenuCard(),
-                // Add more cards as needed
               ],
-            ),
-          );
+            );
+          }
         },
       ),
     );
